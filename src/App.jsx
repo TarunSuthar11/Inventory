@@ -1,15 +1,40 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import Navbar from './components/Navbar'
+import SidebarMenu from './components/SidebarMenu'
 import './App.css'
+import { Outlet } from 'react-router-dom'
+import Login from './pages/Login'
 
 function App() {
-  const [count, setCount] = useState(0)
+  
+  const [isOpen, setIsOpen] = useState(false);
+  console.log(isOpen);
+  
 
   return (
-   <div>
-    <h1 className='text-cyan-300'>hello</h1>
-   </div>
+    <div className="min-h-screen bg-gray-50">
+      <SidebarMenu isOpen={isOpen} onClose={() => setIsOpen(false)} />
+
+      {/* mobile overlay - clicking outside the sidebar will close it on small screens */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40 md:hidden"
+          onClick={() => setIsOpen(false)}
+          aria-hidden
+        />
+      )}
+
+      <div className="ml-0 md:ml-60 transition-all">
+        <div className="">
+          <Navbar setIsOpen={setIsOpen} />
+        </div>
+
+        <main className="p-4">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  
   )
 }
 
